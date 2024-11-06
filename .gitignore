@@ -1,0 +1,18 @@
+# Ignore all .log files
+*.log
+
+# Ignore environment files
+.env
+
+# Ignore Firebase service account key
+firebaseservicekey.json
+
+# Ignore the entire config directory
+# config/
+
+# Ignore operating system files
+# .DS_Store  # macOS
+# Thumbs.db  # Windows
+
+# Ignore all node_modules directories
+# node_modules/
