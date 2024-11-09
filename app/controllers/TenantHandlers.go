@@ -7,18 +7,18 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func CreateTenant(context *fiber.Ctx) (bool, string) {
+func CreateTenant(context *fiber.Ctx) error {
 	user := new(structures.Tenant)
 
 	if err := context.BodyParser(user); err != nil {
-		return false, "invalid fields supplied"
+		return context.Status(400).JSON(fiber.Map{"message": err})
 	}
 
-	var success = services.AddTenantToDb(db, user)
+	success, message := services.AddTenantToDb(db, user)
 	if !success {
-		return !success, "failed to create user"
+		return context.Status(400).JSON(fiber.Map{"message": message})
 	}
-	return success, "created"
+	return context.Status(400).JSON(fiber.Map{"message": message})
 }
 
 func GetTenant(context *fiber.Ctx) (bool, string) {

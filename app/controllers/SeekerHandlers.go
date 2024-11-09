@@ -7,18 +7,18 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func CreateSeeker(context *fiber.Ctx) (bool, string) {
+func CreateSeeker(context *fiber.Ctx) error {
 	user := new(structures.Seeker)
 
 	if err := context.BodyParser(user); err != nil {
-		return false, "invalid fields supplied"
+		return context.Status(400).JSON(fiber.Map{"message": err})
 	}
 
-	var success = services.AddSeekerToDb(db, user)
+	success, message := services.AddSeekerToDb(db, user)
 	if !success {
-		return !success, "failed to create user"
+		return context.Status(400).JSON(fiber.Map{"message": message})
 	}
-	return success, "created"
+	return context.Status(400).JSON(fiber.Map{"message": message})
 }
 
 func GetSeeker(context *fiber.Ctx) (bool, string) {

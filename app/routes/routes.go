@@ -30,11 +30,7 @@ func SetupRoutes(router *fiber.App) {
 		})
 
 		api.Post("/new", func(c *fiber.Ctx) error {
-			success, data := controllers.CreateOwner(c)
-			if !success {
-				return c.Status(400).JSON(fiber.Map{"message": data})
-			}
-			return c.Status(201).JSON(fiber.Map{"message": "created", "data": data})
+			return controllers.CreateOwner(c)
 		})
 
 		api.Patch("/:id/:data", func(c *fiber.Ctx) error {
@@ -60,11 +56,7 @@ func SetupRoutes(router *fiber.App) {
 		})
 
 		api.Post("/new", func(c *fiber.Ctx) error {
-			success, data := controllers.CreateSeeker(c)
-			if !success {
-				return c.Status(400).JSON(fiber.Map{"message": data})
-			}
-			return c.Status(201).JSON(fiber.Map{"message": "created", "data": data})
+			return controllers.CreateSeeker(c)
 		})
 
 		api.Patch("/:id/:data", func(c *fiber.Ctx) error {
@@ -90,11 +82,7 @@ func SetupRoutes(router *fiber.App) {
 		})
 
 		api.Post("/new", func(c *fiber.Ctx) error {
-			success, data := controllers.CreateTenant(c)
-			if !success {
-				return c.Status(400).JSON(fiber.Map{"message": data})
-			}
-			return c.Status(201).JSON(fiber.Map{"message": "created", "data": data})
+			return controllers.CreateTenant(c)
 		})
 
 		api.Patch("/:id/:data", func(c *fiber.Ctx) error {
@@ -123,11 +111,7 @@ func SetupRoutes(router *fiber.App) {
 
 	// CREATE NEW ADMIN
 	admins.Post("/new", func(c *fiber.Ctx) error {
-		success, data := controllers.CreateAdmin(c)
-		if !success {
-			return c.Status(400).JSON(fiber.Map{"message": data})
-		}
-		return c.Status(201).JSON(fiber.Map{"message": "created", "data": data})
+		return controllers.CreateAdmin(c)
 	})
 
 	// UPDATE ADMIN DATA

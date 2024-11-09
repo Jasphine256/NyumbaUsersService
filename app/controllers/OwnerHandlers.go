@@ -7,18 +7,18 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func CreateOwner(context *fiber.Ctx) (bool, string) {
+func CreateOwner(context *fiber.Ctx) error {
 	user := new(structures.Owner)
 
 	if err := context.BodyParser(user); err != nil {
-		return false, "invalid fields supplied"
+		return context.Status(400).JSON(fiber.Map{"message": err})
 	}
 
-	var success = services.AddOwnerToDb(db, user)
+	success, message := services.AddOwnerToDb(db, user)
 	if !success {
-		return !success, "failed to create user"
+		return context.Status(400).JSON(fiber.Map{"message": message})
 	}
-	return success, "created"
+	return context.Status(400).JSON(fiber.Map{"message": message})
 }
 
 func GetOwner(context *fiber.Ctx) (bool, string) {

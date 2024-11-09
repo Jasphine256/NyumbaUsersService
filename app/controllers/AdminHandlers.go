@@ -1,24 +1,28 @@
 package controllers
 
 import (
+	"NyumbaUsersService/app/database"
 	"NyumbaUsersService/app/services"
 	"NyumbaUsersService/app/structures"
 
 	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 )
 
-func CreateAdmin(context *fiber.Ctx) (bool, string) {
+var db *gorm.DB = database.GetDB()
+
+func CreateAdmin(context *fiber.Ctx) error {
+
 	user := new(structures.Admin)
-
 	if err := context.BodyParser(user); err != nil {
-		return false, "invalid fields supplied"
+		return context.Status(400).JSON(fiber.Map{"message": err})
 	}
 
-	var success = services.AddAdminToDb(db, user)
+	success, message := services.AddAdminToDb(db, user)
 	if !success {
-		return !success, "failed to created admin"
+		return context.Status(400).JSON(fiber.Map{"message": message})
 	}
-	return success, "created"
+	return context.Status(201).JSON(fiber.Map{"message": message})
 }
 
 func GetAdmin(context *fiber.Ctx) (bool, string) {

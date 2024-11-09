@@ -41,6 +41,7 @@ var (
 
 func GetDB() *gorm.DB {
 	once.Do(func() {
+		InitDB()
 		db = DB
 	})
 	return db
