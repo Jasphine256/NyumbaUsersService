@@ -15,7 +15,7 @@ func CreateAdmin(context *fiber.Ctx) error {
 
 	user := new(structures.Admin)
 	if err := context.BodyParser(user); err != nil {
-		return context.Status(400).JSON(fiber.Map{"message": err})
+		return context.Status(400).JSON(fiber.Map{"message": "invalid fields provided"})
 	}
 
 	success, message := services.AddAdminToDb(db, user)
@@ -25,22 +25,26 @@ func CreateAdmin(context *fiber.Ctx) error {
 	return context.Status(201).JSON(fiber.Map{"message": message})
 }
 
-func GetAdmin(context *fiber.Ctx) (bool, string) {
-	success := true
-	return success, "data"
+func GetAdmin(context *fiber.Ctx) error {
+	success, data := services.GetAdminByEmail(db, context)
+	if !success{
+		return context.Status(400).JSON(fiber.Map{"message": data})
+	}
+	return context.Status(200).JSON(fiber.Map{"message": data})
 }
 
-func GetAdmins() (bool, string) {
-	success := true
-	return success, "users list here"
+func UpdateAdmin(context *fiber.Ctx) error {
+	success, data := services.UpdateAdminById(db, context)
+	if !success {
+		return context.Status(400).JSON(fiber.Map{"message": data})
+	}
+	return context.Status(200).JSON(fiber.Map{"message": data})
 }
 
-func UpdateAdmin(context *fiber.Ctx) (bool, string) {
-	success := true
-	return success, "data"
-}
-
-func DeleteAdmin(context *fiber.Ctx) (bool, string) {
-	success := true
-	return success, "data"
+func DeleteAdmin(context *fiber.Ctx) error {
+	success, data := services.DeleteAdminById(db, context)
+	if !success {
+		return context.Status(400).JSON(fiber.Map{"message": data})
+	}
+	return context.Status(200).JSON(fiber.Map{"message": data})
 }

@@ -8,10 +8,12 @@ import (
 
 func SetupRoutes(router *fiber.App) {
 
-	router.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("hello world")
-	},
-	)
+	// router.Get("/", func(c *fiber.Ctx) error {
+	// 	return c.SendString("WELCOME TO JASPHINE DIGITAL TECHNOLOGIES")
+	// },
+	// )
+
+	// #####################  ROUTER GROUPS #####################
 
 	admins := router.Group("/admins")
 	users := router.Group("/users")
@@ -21,108 +23,79 @@ func SetupRoutes(router *fiber.App) {
 	users.Route("/owners", func(api fiber.Router) {
 
 		api.Get("/", func(c *fiber.Ctx) error {
-			return c.SendString("hello")
-		})
-
-		api.Get("/:id", func(c *fiber.Ctx) error {
-			id := c.Params("id")
-			return c.SendString(id)
+			return controllers.GetOwner(c)
 		})
 
 		api.Post("/new", func(c *fiber.Ctx) error {
 			return controllers.CreateOwner(c)
 		})
 
-		api.Patch("/:id/:data", func(c *fiber.Ctx) error {
-			id := c.Params("id")
-			data := c.Params("data")
-			return c.JSON(fiber.Map{"id": id, "data": data})
+		api.Patch("/:id", func(c *fiber.Ctx) error {
+			return controllers.UpdateOwner(c)
 		})
 
 		api.Delete("/:id", func(c *fiber.Ctx) error {
-			return c.SendString("deleted")
+			return controllers.DeleteOwner(c)
 		})
 	})
 
 	users.Route("/seekers", func(api fiber.Router) {
 
 		api.Get("/", func(c *fiber.Ctx) error {
-			return c.SendString("hello")
-		})
-
-		api.Get("/:id", func(c *fiber.Ctx) error {
-			id := c.Params("id")
-			return c.SendString(id)
+			return controllers.GetSeeker(c)
 		})
 
 		api.Post("/new", func(c *fiber.Ctx) error {
 			return controllers.CreateSeeker(c)
 		})
 
-		api.Patch("/:id/:data", func(c *fiber.Ctx) error {
-			id := c.Params("id")
-			data := c.Params("data")
-			return c.JSON(fiber.Map{"id": id, "data": data})
+		api.Patch("/:id", func(c *fiber.Ctx) error {
+			return controllers.UpdateSeeker(c)
 		})
 
 		api.Delete("/:id", func(c *fiber.Ctx) error {
-			return c.SendString("deleted")
+			return controllers.DeleteSeeker(c)
 		})
 	})
 
 	users.Route("/tenants", func(api fiber.Router) {
 
 		api.Get("/", func(c *fiber.Ctx) error {
-			return c.SendString("hello")
-		})
-
-		api.Get("/:id", func(c *fiber.Ctx) error {
-			id := c.Params("id")
-			return c.SendString(id)
+			return controllers.GetTenant(c)
 		})
 
 		api.Post("/new", func(c *fiber.Ctx) error {
 			return controllers.CreateTenant(c)
 		})
 
-		api.Patch("/:id/:data", func(c *fiber.Ctx) error {
-			id := c.Params("id")
-			data := c.Params("data")
-			return c.JSON(fiber.Map{"id": id, "data": data})
+		api.Patch("/:id", func(c *fiber.Ctx) error {
+			return controllers.UpdateTenant(c)
 		})
 
 		api.Delete("/:id", func(c *fiber.Ctx) error {
-			return c.SendString("deleted")
+			return controllers.DeleteTenant(c)
 		})
 	})
 
 	// #####################  ROUTES FOR /admins/* #####################
-
-	// GET ALL ADMINS
-	admins.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("hello admin")
-	})
-
-	// GET ADMIN BY ID
-	admins.Get("/:id", func(c *fiber.Ctx) error {
-		id := c.Params("id")
-		return c.SendString(id)
-	})
 
 	// CREATE NEW ADMIN
 	admins.Post("/new", func(c *fiber.Ctx) error {
 		return controllers.CreateAdmin(c)
 	})
 
+	// GET ADMIN
+	admins.Get("/", func(c *fiber.Ctx) error {
+		return controllers.GetAdmin(c)
+	})
+
 	// UPDATE ADMIN DATA
-	admins.Patch("/:id/:data", func(c *fiber.Ctx) error {
-		id := c.Params("id")
-		data := c.Params("data")
-		return c.JSON(fiber.Map{"id": id, "data": data})
+	admins.Patch("/:id", func(c *fiber.Ctx) error {
+		return controllers.UpdateAdmin(c)
 	})
 
 	// DELETE ADMIN BY ID
 	admins.Delete("/:id", func(c *fiber.Ctx) error {
-		return c.SendString("deleted")
+		return controllers.DeleteAdmin(c)
 	})
 }

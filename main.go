@@ -22,7 +22,7 @@ func main() {
 	})
 
 	middleware.SetupMiddleware(router)
-	middleware.SetupSecurity(router)
+	// middleware.SetupSecurity(router)
 
 	routes.SetupRoutes(router)
 
